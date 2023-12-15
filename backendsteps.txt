@@ -1,0 +1,54 @@
+#1
+https://console.cloud.google.com
+
+#2
+=> Select project
+
+#3
+ref: https://docs.aampe.com/docs/firebase-cloud-messaging
+
+=> select burger menu left => IAM & Admin => Roles
+#Title , Desc, 
+[Add permissions] = > Firebase Cloud Messaging API Admin => cloudmessaging.messages.create => [Add]
+
+=> select burger menu left => IAM & Admin => Service Accounts
+# create a service account 
+##Service Account Name: & desc:
+Create and Continue
+
+## select role => custom =>fcm push notification role
+
+
+
+
+## click on actions ⋮  => manage details => [keys tab] => add key => download
+
+md backend-server
+npm init --y
+## copy here downloaded dev-notification-service-account.json
+npm i axios jsonwebtoken google-auth-library
+
+
+
+
+
+
+
+##################################################
+node server.js  # to get token
+##################################################
+
+=> replace =>https://fcm.googleapis.com/v1/projects/[project-id-from-general-settings]/messages:send
+##################################################
+curl -X POST -H "Authorization: Bearer ya29.c.c0AY_VpZhdoHApVRTr-MraxdaZxRL-l7V3yPytDUHf9DQJ41_kOubtx68JhBIks8wQEbidjMto9yH_HfuaGNGX84QKR8lqJ0NamTvpCAgbDmCBNbjp0dY5RJzq49xEvcxq5ZWDV3zaxap2tZYDinCcaXAiu-B6qlOXKVioRY37E8Y0NSxj2id8di4xK9XV7-2nww2c6H0fdan19JWsAOYFJh-uzh6XWhpKIbKwvQcuQFRrSiNbEcm-jhUfQ-lYsNfW3TWrdxkYP-WkGcB5DE9E5KBFgNdrTtkMPileoctKvaDctlfanxm-sxGcXA4E3Fm3YpQP8KhTDu9IJo57RxEPKYcGFLeAuHKyFscYLVMj9cV7hn9Kzuwkz6NdT385P6_i_30MMulBQ7yjekSS20mrmhywy_qk0op5OIYWW2I1vRjbkrdBSYhSx6Mily_RMS_O79p2fOigQwkbhlglvlQjnF5t0ns5nhXrvYzr-VkaZJnInWfcnShn1YkRkkpnitthe0-MQ_kqyF7Vtbz6c4eViYwmj2p1kzXRZBdQVOayzsRsFsdVml4_8mqbp_Xivd3cQmWUgdIZvJ-24hY9_SO9_BbwcaJn4pbnJx2iv9jO4R2O6VRFz08bkh0yJhfJyre2Mhnr9zSBh58zXg7uQI11t_rOpzbaJ60zpYXgpy3XredvO4orgxMWa8eSzdeIdubfkvg8cbuIXm61W1wfwso6BqF5ryQifIm59gmtZ-RgOYuI6Iau_fVdI55ZWaQ5ez-a7dazwxBSB8a9nQJw2teaQI47U3BtnSZR5s7ywlqlZZXr0m3yYJ9adgVjumwkOh6t0Fe9sZ-wwuucZYintq3BSgqSZ7enfUmW_U3s4u2FFWkkwb6d8rt6pU3o8shXBXx6V8rlWwYchRYOjFcdF7hUR3BBscw08r9ogyIQf2Yjb9psYBisa-x7gdQ4vbgln66FOkp3e6_kJqSxyXFsefvmjf8SMchh2gFpV_9i5ibI-W87n82mcBrxVdu" -H "Content-Type: application/json" -d '{
+"message":{
+   "notification":{
+     "title":"FCM Message",
+     "body":"This is an FCM Message"
+   },
+   "token":"ej1u2krhRv2o1v33GoGY5f:APA91bHrpdkTySFeu0ug55RMMA8ztR2wcWlRyLaFx2nsYmynA2WJomDUhv7Y8exQ2dZRUGQqb6zImeIvJaI8y_nFE1ozDPPIkWYJ4QgwXQGvsbcggqAoWIIR9EGltb50Y-AeTBQetBVj"
+}}' https://fcm.googleapis.com/v1/projects/dev-notification-580ca/messages:send
+
+##################################################
+
+

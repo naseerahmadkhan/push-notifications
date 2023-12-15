@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "961679480",
+    "project_id": "dev-notification-580ca",
+    "storage_bucket": "dev-notification-580ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961679480:android:d293bb9271e5d4d8295d8d",
+        "android_client_info": {
+          "package_name": "com.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALPblHlD5AS1KHqPUHWVnPQEQdMxP7hkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,117 @@
+https://medium.com/@dirussogaetano/push-notifications-react-native-3ebdfa33fe49
+
+#1
+npx react-native@latest init frontend
+npm start
+
+#2
+npm i @react-native-firebase/app
+npm i @react-native-firebase/messaging
+
+#3
+Go to the Firebase Console and create a new project.
+Add an Android app and an iOS app to your project. Follow the instructions to download the config files (google-services.json for Android and GoogleService-Info.plist for iOS) and place them in the respective directories (android/app for Android and ios for iOS).
+
+##  3.0 add app => android => 
+##  3.1 Copy the google-services.json file to the /android/app folder.
+##! 3.2 Name of app com.frontend and firebase must be same [android/app/build.gradle => defaultConfig{applicationId:''}]
+
+
+
+#4 Now we have to link this file with our Android native code, to do that copy the following line of code in the directory /android/build.gradle:
+@ after line no 19
+classpath 'com.google.gms:google-services:4.3.15'
+
+#5 Finally we have to execute the Firebase plugin, to do that, copy the following line of code in the directory /android/app/build.gradle
+@ after line no.2
+
+apply plugin: 'com.google.gms.google-services'
+
+
+#7 import in app.js
+#########################################################
+import {View, Text, Alert} from 'react-native';
+import React, {useEffect} from 'react';
+import messaging from '@react-native-firebase/messaging';
+
+export default function App() {
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    console.log('token', token);
+  };
+  useEffect(() => {
+    console.log('welcome to app');
+    getToken();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
+  return (
+    <View>
+      <Text>App</Text>
+    </View>
+  );
+}
+
+
+
+#########################################################
+
+
+#8
+Another important point is that you might want to execute a callback when a notification is received (like fetching some data or someting else), but the functions we add to our custom hooks are executed when the app is opened, not with the app closed. To execute this callback, we have to execute the following code outside of your application logic as early as possible (in this case, in index.js)
+
+######### index.js ###########################################################################################
+import messaging from '@react-native-firebase/messaging';
+
+const checkNotificationPermission = async () => {
+    try {
+      const authStatus = await messaging().hasPermission();
+      console.log('Permission status:', authStatus);
+  
+      if (authStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+        console.log('Notification permission is granted.');
+        // You can proceed to handle notifications here
+      } else {
+        console.log('Notification permission is not granted.');
+        // You may choose to request permission at this point
+      }
+    } catch (error) {
+      console.error('Error checking notification permission:', error);
+    }
+  };
+// Call the function where needed
+checkNotificationPermission();
+
+
+
+// Register background handler
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
+// Handle the initial notification when the app is opened
+messaging().getInitialNotification().then(remoteMessage => {
+  if (remoteMessage) {
+    // Extract the notification data
+    const { notification } = remoteMessage;
+    if (notification) {
+      // Show an alert with the notification message
+      Alert.alert(notification.title, notification.body);
+    }
+  }
+});
+  ####################################################################################################
+  
+  
+ #9 npm start 
+  
+  Your Firebase Token is: 
+  cy-wtt3fRJmDMs29in4Axy:APA91bGaSFcI_dfDJuZct20Im0g4aTWz9chhwsEpmcTCDWr-rgWvF2Vu_JTMZCxoND6Nn7DNy638hcYVEYsraf420g5DFrZ0Lz9eZmmwufYgDY4miP_TqOpIxjaZ0wbcnm-DqQrzODJ8
+  cy-wtt3fRJmDMs29in4Axy:APA91bGaSFcI_dfDJuZct20Im0g4aTWz9chhwsEpmcTCDWr-rgWvF2Vu_JTMZCxoND6Nn7DNy638hcYVEYsraf420g5DFrZ0Lz9eZmmwufYgDY4miP_TqOpIxjaZ0wbcnm-DqQrzODJ8
